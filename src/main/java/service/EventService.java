@@ -18,8 +18,7 @@ public class EventService {
         return  eventDaoImp.getEventById(id);
     }
 
-    public void addEvent(String name, String description, String address, double cost, Date date){
-        Event event = new Event(name, description, address, cost, date);
+    public void addEvent(Event event){
         EventDaoImp eventDaoImp = new EventDaoImp();
         eventDaoImp.addEvent(event);
     }

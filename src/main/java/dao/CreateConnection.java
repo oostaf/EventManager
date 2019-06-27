@@ -1,7 +1,5 @@
 package dao;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -24,9 +22,7 @@ public class CreateConnection {
         String databaseUrl;
         String databaseUser;
         String databasePassword;
-//        String filePath = new File("src/main/resources/db.properties").getAbsolutePath();
-        try //(FileReader reader = new FileReader(filePath)) {
-                (InputStream is = CreateConnection.class.getClassLoader().getResourceAsStream("db.properties")) {
+        try (InputStream is = CreateConnection.class.getClassLoader().getResourceAsStream("db.properties")) {
             Properties p = new Properties();
             p.load(is);
 
@@ -36,7 +32,6 @@ public class CreateConnection {
 
             try {
                 Class.forName("org.postgresql.Driver");
-//            Class.forName("com.mysql.jdbc.Driver");
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException("Fail to load postgresql driver", e);
             }
@@ -52,4 +47,5 @@ public class CreateConnection {
             throw new RuntimeException("Fail to read from property file", e);
         }
     }
+
 }

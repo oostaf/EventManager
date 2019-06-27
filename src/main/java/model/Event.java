@@ -22,7 +22,7 @@ public class Event {
     private String description;
     private double cost;
     private String address;
-    private boolean isActive;
+    private boolean active;
 
     public int getId() {
         return id;
@@ -32,12 +32,12 @@ public class Event {
         this.id = id;
     }
 
-    public boolean isActive() {
-        return isActive;
+    public boolean getActive() {
+        return active;
     }
 
     public void setActive(boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public String getName() {

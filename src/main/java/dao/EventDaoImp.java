@@ -47,7 +47,7 @@ public class EventDaoImp implements EventDao {
             preparedStatement.setString(3, event.getAddress());
             preparedStatement.setDouble(4, event.getCost());
             preparedStatement.setDate(5, event.getDate());
-            preparedStatement.setBoolean(6, event.isActive());
+            preparedStatement.setBoolean(6, event.getActive());
             preparedStatement.setInt(7, event.getId());
 
             preparedStatement.execute();
