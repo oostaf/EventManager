@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'com.core.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    providedCompile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+//
+//    providedCompile 'javax.servlet:servlet-api:4.0.1'
+//    providedCompile 'javax.servlet.jsp:jsp-api:2.1'
+//    runtime 'javax.servlet:jstl:1.1.2'
+//    runtime 'taglibs:standard:1.1.2'
+    compile group: 'javax.servlet.jsp.jstl', name: 'jstl-api', version: '1.2'
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
