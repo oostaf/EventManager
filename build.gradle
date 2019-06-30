@@ -19,6 +19,7 @@ dependencies {
 //    providedCompile 'javax.servlet.jsp:jsp-api:2.1'
 //    runtime 'javax.servlet:jstl:1.1.2'
 //    runtime 'taglibs:standard:1.1.2'
+    compile 'net.sargue:java-time-jsptags:1.1.4'
     compile group: 'javax.servlet.jsp.jstl', name: 'jstl-api', version: '1.2'
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'

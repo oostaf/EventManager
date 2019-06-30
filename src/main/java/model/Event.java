@@ -1,14 +1,14 @@
 package model;
 
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class Event {
 
     public Event() {
     }
 
-    public Event(String name, String description, String address, double cost, Date date) {
+    public Event(String name, String description, String address, double cost, LocalDateTime date) {
         this.name = name;
         this.description = description;
         this.address = address;
@@ -18,7 +18,7 @@ public class Event {
 
     private int id;
     private String name;
-    private Date date;
+    private LocalDateTime date;
     private String description;
     private double cost;
     private String address;
@@ -48,11 +48,11 @@ public class Event {
         this.name = name;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

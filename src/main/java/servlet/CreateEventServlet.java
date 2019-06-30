@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet(urlPatterns = {"/createEvent"})
 public class CreateEventServlet extends HttpServlet {
@@ -39,21 +39,15 @@ public class CreateEventServlet extends HttpServlet {
         double cost = Double.parseDouble(request.getParameter("price"));
         String dateFromRequest = request.getParameter("date");
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm");
-        java.util.Date date = null;
-        try {
-            date = simpleDateFormat.parse(dateFromRequest);
-        } catch (ParseException e) {
-            throw new RuntimeException("Fail to parse date from UI", e);
-        }
-        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+        LocalDateTime formatDateTime = LocalDateTime.parse(dateFromRequest, formatter);
 
         Event event = new Event();
         event.setName(name);
         event.setDescription(description);
         event.setAddress(address);
         event.setCost(cost);
-        event.setDate(sqlDate);
+        event.setDate(formatDateTime);
 
         EventService eventService = new EventService();
         eventService.addEvent(event);

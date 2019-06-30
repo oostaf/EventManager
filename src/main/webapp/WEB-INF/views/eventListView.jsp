@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,7 +46,8 @@
             <td>${event.description}</td>
             <td>${event.address}</td>
             <td>${event.cost}</td>
-            <td>${event.date}</td>
+            <javatime:format value="${event.date}" pattern="yyyy-MM-dd HH:mm" var="parsedDate"/>
+            <td>${parsedDate}</td>
             <td>${event.active}</td>
             <td>
                 <a href="editProduct?code=${event.id}">Edit</a>

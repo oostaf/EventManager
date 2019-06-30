@@ -5,6 +5,8 @@ import model.Event;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +27,10 @@ public class EventDaoImp implements EventDao {
             PreparedStatement preparedStatement = CreateConnection.getConnection().prepareStatement(INSERT_EVENT_QUERY);
 
             preparedStatement.setString(1, event.getName());
-
             preparedStatement.setString(2, event.getDescription());
             preparedStatement.setString(3, event.getAddress());
             preparedStatement.setDouble(4, event.getCost());
-            preparedStatement.setDate(5, event.getDate());
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(event.getDate()));
             preparedStatement.setBoolean(6, true);
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -41,12 +42,11 @@ public class EventDaoImp implements EventDao {
     public void updateEvent(Event event) {
         try {
             PreparedStatement preparedStatement = CreateConnection.getConnection().prepareStatement(UPDATE_ALL_FIELD_QUERY);
-
             preparedStatement.setString(1, event.getName());
             preparedStatement.setString(2, event.getDescription());
             preparedStatement.setString(3, event.getAddress());
             preparedStatement.setDouble(4, event.getCost());
-            preparedStatement.setDate(5, event.getDate());
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(event.getDate()));
             preparedStatement.setBoolean(6, event.getActive());
             preparedStatement.setInt(7, event.getId());
 
@@ -113,7 +113,7 @@ public class EventDaoImp implements EventDao {
             event.setActive(resultSet.getBoolean("is_active"));
             event.setAddress(resultSet.getString("address"));
             event.setCost(resultSet.getDouble("cost"));
-            event.setDate(resultSet.getDate("date"));
+            event.setDate(resultSet.getTimestamp("date").toLocalDateTime());
             event.setDescription(resultSet.getString("description"));
             return event;
         } catch (SQLException exc) {
