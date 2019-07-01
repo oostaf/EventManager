@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class CreateConnection {
+public class ConnectionUtils {
 
     private static Connection connection = null;
 
@@ -22,7 +22,7 @@ public class CreateConnection {
         String databaseUrl;
         String databaseUser;
         String databasePassword;
-        try (InputStream is = CreateConnection.class.getClassLoader().getResourceAsStream("db.properties")) {
+        try (InputStream is = ConnectionUtils.class.getClassLoader().getResourceAsStream("db.properties")) {
             Properties p = new Properties();
             p.load(is);
 

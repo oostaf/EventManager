@@ -1,7 +1,7 @@
 package servlet;
 
 import model.Event;
-import service.EventService;
+import service.EventServiceImp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ public class EventListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Event> list = new EventService().getAllEvents();
+        List<Event> list = new EventServiceImp().getAllEvents();
 
         // Store info in request attribute, before forward to views
         request.setAttribute("eventList", list);

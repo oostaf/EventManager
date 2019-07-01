@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class EventDaoImp implements EventDao {
     @Override
     public void addEvent(Event event) {
         try {
-            PreparedStatement preparedStatement = CreateConnection.getConnection().prepareStatement(INSERT_EVENT_QUERY);
+            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(INSERT_EVENT_QUERY);
 
             preparedStatement.setString(1, event.getName());
             preparedStatement.setString(2, event.getDescription());
@@ -41,7 +40,7 @@ public class EventDaoImp implements EventDao {
     @Override
     public void updateEvent(Event event) {
         try {
-            PreparedStatement preparedStatement = CreateConnection.getConnection().prepareStatement(UPDATE_ALL_FIELD_QUERY);
+            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(UPDATE_ALL_FIELD_QUERY);
             preparedStatement.setString(1, event.getName());
             preparedStatement.setString(2, event.getDescription());
             preparedStatement.setString(3, event.getAddress());
@@ -60,7 +59,7 @@ public class EventDaoImp implements EventDao {
     @Override
     public void deactivateEvent(Event event) {
         try {
-            PreparedStatement preparedStatement = CreateConnection.getConnection().prepareStatement(DEACTIVATE_BY_ID_QUERY);
+            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(DEACTIVATE_BY_ID_QUERY);
 
             preparedStatement.setBoolean(1, false);
             preparedStatement.setInt(2, event.getId());
@@ -74,7 +73,7 @@ public class EventDaoImp implements EventDao {
     public List<Event> getAllEvents() {
         try {
             List<Event> eventsList = new ArrayList<>();
-            PreparedStatement preparedStatement = CreateConnection.getConnection().prepareStatement(SELECT_ALL_QUERY, ResultSet.TYPE_SCROLL_SENSITIVE,
+            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(SELECT_ALL_QUERY, ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             ResultSet eventsResultSet = preparedStatement.executeQuery();
             eventsResultSet.beforeFirst();
@@ -90,7 +89,7 @@ public class EventDaoImp implements EventDao {
     @Override
     public Event getEventById(int id) {
         try {
-            PreparedStatement preparedStatement = CreateConnection.getConnection().prepareStatement(GET_EVENT_BY_ID_QUERY);
+            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(GET_EVENT_BY_ID_QUERY);
 
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();

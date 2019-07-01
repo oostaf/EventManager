@@ -15,46 +15,58 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@WebServlet(urlPatterns = {"/createEvent"})
-public class CreateEventServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/editEvent"})
+public class EditEventServlet extends HttpServlet {
+
     Logger logger = LoggerFactory.getLogger(CreateEventServlet.class);
 
-    public CreateEventServlet() {
+    public EditEventServlet() {
         super();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/createEventView.jsp");
-        dispatcher.forward(request, response);
+        int eventId = Integer.parseInt(request.getParameter("id"));
+        EventServiceImp eventServiceImp = new EventServiceImp();
+        Event event = eventServiceImp.getEventByID(eventId);
+        if (event == null) {
+            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/WEB-INF/views/oops.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            request.setAttribute("event", event);
+
+            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/WEB-INF/views/editEventView.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            int eventId = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             String description = request.getParameter("description");
             String address = request.getParameter("address");
-            double cost = Double.parseDouble(request.getParameter("price"));
+            double cost = Double.parseDouble(request.getParameter("cost"));
             String dateFromRequest = request.getParameter("date");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
             LocalDateTime formatDateTime = LocalDateTime.parse(dateFromRequest, formatter);
 
-            Event event = new Event();
+            EventServiceImp eventServiceImp = new EventServiceImp();
+            Event event = eventServiceImp.getEventByID(eventId);
             event.setName(name);
             event.setDescription(description);
             event.setAddress(address);
             event.setCost(cost);
             event.setDate(formatDateTime);
 
-            EventServiceImp eventServiceImp = new EventServiceImp();
-            eventServiceImp.addEvent(event);
+            eventServiceImp.updateEvent(event);
 
             request.setAttribute("event", event);
-
             response.sendRedirect(request.getContextPath() + "/eventList");
         } catch (Exception exc) {
             logger.info("Exception was received during event adding:", exc);
