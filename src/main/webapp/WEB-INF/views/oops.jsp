@@ -12,5 +12,9 @@
 </head>
 <body>
 <jsp:include page="navigationPanel.jsp"></jsp:include>
+<title>Oops, something went wrong. Please contact administrator</title>
+<div class="text-center">
+    <img src="../images/oops.jpg" class="rounded" alt="Oops">
+</div>
 </body>
 </html>

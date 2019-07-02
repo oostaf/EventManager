@@ -1,9 +1,12 @@
 package servlet;
 
 import model.Event;
+import model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.EventService;
 import service.EventServiceImp;
+import service.LocationServiceImp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,8 +31,8 @@ public class EditEventServlet extends HttpServlet {
             throws ServletException, IOException {
 
         int eventId = Integer.parseInt(request.getParameter("id"));
-        EventServiceImp eventServiceImp = new EventServiceImp();
-        Event event = eventServiceImp.getEventByID(eventId);
+        EventService eventService = new EventServiceImp();
+        Event event = eventService.getEventByID(eventId);
         if (event == null) {
             RequestDispatcher dispatcher = request.getServletContext()
                     .getRequestDispatcher("/WEB-INF/views/oops.jsp");
@@ -49,18 +52,24 @@ public class EditEventServlet extends HttpServlet {
             int eventId = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             String description = request.getParameter("description");
-            String address = request.getParameter("address");
+            String address = request.getParameter("location");
             double cost = Double.parseDouble(request.getParameter("cost"));
             String dateFromRequest = request.getParameter("date");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
             LocalDateTime formatDateTime = LocalDateTime.parse(dateFromRequest, formatter);
 
+            Location location = new Location();
+            location.setAddress(address);
+            LocationServiceImp locationServiceImp = new LocationServiceImp();
+            locationServiceImp.addLocation(location);
+            location = locationServiceImp.getLocationByAddress(address);
+
             EventServiceImp eventServiceImp = new EventServiceImp();
             Event event = eventServiceImp.getEventByID(eventId);
             event.setName(name);
             event.setDescription(description);
-            event.setAddress(address);
+            event.setLocation(location);
             event.setCost(cost);
             event.setDate(formatDateTime);
 

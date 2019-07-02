@@ -8,27 +8,27 @@ public class Event {
     public Event() {
     }
 
-    public Event(String name, String description, String address, double cost, LocalDateTime date) {
+    public Event(String name, String description, Location location, double cost, LocalDateTime date) {
         this.name = name;
         this.description = description;
-        this.address = address;
+        this.location = location;
         this.cost = cost;
         this.date = date;
     }
 
-    private int id;
+    private Integer id;
     private String name;
     private LocalDateTime date;
     private String description;
     private double cost;
-    private String address;
+    private Location location;
     private boolean active;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -64,12 +64,12 @@ public class Event {
         this.cost = cost;
     }
 
-    public String getAddress() {
-        return address;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getDescription() {

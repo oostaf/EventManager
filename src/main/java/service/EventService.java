@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface EventService {
 
-    public List<Event> getAllEvents();
+    List<Event> getAllEvents();
 
-    public Event getEventByID(int id);
+    Event getEventByID(int id);
 
-    public void addEvent(Event event);
+    void addEvent(Event event);
 
-    public void updateEvent(Event event);
+    void updateEvent(Event event);
 
-    public void deactivateEvent(int id);
+    void deactivateEvent(int id);
 
 }

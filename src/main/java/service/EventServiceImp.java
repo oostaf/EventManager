@@ -1,35 +1,35 @@
 package service;
 
+import dao.EventDao;
 import dao.EventDaoImp;
 import model.Event;
 
-import java.sql.Date;
 import java.util.List;
 
-public class EventServiceImp implements EventService{
+public class EventServiceImp implements EventService {
+    private EventDao eventDaoImp;
 
-    public List<Event> getAllEvents(){
-        EventDaoImp eventDaoImp = new EventDaoImp();
-        return  eventDaoImp.getAllEvents();
+    public EventServiceImp() {
+        eventDaoImp = new EventDaoImp();
     }
 
-    public Event getEventByID(int id){
-        EventDaoImp eventDaoImp = new EventDaoImp();
-        return  eventDaoImp.getEventById(id);
+    public List<Event> getAllEvents() {
+        return eventDaoImp.getAllEvents();
     }
 
-    public void addEvent(Event event){
-        EventDaoImp eventDaoImp = new EventDaoImp();
+    public Event getEventByID(int id) {
+        return eventDaoImp.getEventById(id);
+    }
+
+    public void addEvent(Event event) {
         eventDaoImp.addEvent(event);
     }
 
-    public void updateEvent(Event event){
-        EventDaoImp eventDaoImp = new EventDaoImp();
+    public void updateEvent(Event event) {
         eventDaoImp.updateEvent(event);
     }
 
-    public void deactivateEvent(int id){
-        EventDaoImp eventDaoImp = new EventDaoImp();
+    public void deactivateEvent(int id) {
         Event event = new Event();
         event.setId(id);
         eventDaoImp.deactivateEvent(event);

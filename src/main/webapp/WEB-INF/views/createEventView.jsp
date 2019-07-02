@@ -5,11 +5,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
+    <script src="<c:url value="/resources/js/typeahead.bundle.js" />"></script>
+    <script src="<c:url value="/resources/js/typeahead.bundle.min.js"/>"></script>
+    <script src="<c:url value="/resources/js/typeahead.jquery.js" />"></script>
+    <script src="<c:url value="/resources/js/typeahead.jquery.min.js" />"></script>
+    <script src="<c:url value="/resources/js/bloodhound.js" />"></script>
+    <script src="<c:url value="/resources/js/bloodhound.min.js"/>"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/themes/material_blue.css">
 
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <!--  Flatpickr  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
 
@@ -20,7 +26,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.3/css/mdb.min.css" rel="stylesheet">
-
 
     <meta charset="UTF-8">
     <title>Create Event</title>
@@ -51,6 +56,49 @@
             });
         }, false);
     })();
+
+    var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+            var matches, substringRegex;
+
+            // an array that will be populated with substring matches
+            matches = [];
+
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+                if (substrRegex.test(str)) {
+                    matches.push(str);
+                }
+            });
+            cb(matches);
+        };
+    };
+
+    var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+        'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
+        'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+        'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+        'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+        'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+        'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
+        'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+        'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+    ];
+
+    $('.typeahead').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        },
+        {
+            name: 'states',
+            source: substringMatcher(states)
+        });
+
 </script>
 
 <jsp:include page="navigationPanel.jsp"></jsp:include>
@@ -84,7 +132,7 @@
             <label for="addressField">Address</label>
         </div>
         <div class="col-sm-5">
-            <input type="text" class="form-control" id="addressField" value="${event.address}" name="address" required>
+            <input type="text" class="form-control typeahead" autocomplete="off" id="addressField" value="${event.location.address}" name="location" required>
             <div class="invalid-feedback">
                 Address field could not be empty.
             </div>

@@ -1,8 +1,8 @@
 package servlet;
 
-import model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.EventService;
 import service.EventServiceImp;
 
 import javax.servlet.RequestDispatcher;
@@ -26,8 +26,8 @@ public class DeactivateEventServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             int eventId = Integer.parseInt(request.getParameter("id"));
-            EventServiceImp eventServiceImp = new EventServiceImp();
-            eventServiceImp.deactivateEvent(eventId);
+            EventService eventService = new EventServiceImp();
+            eventService.deactivateEvent(eventId);
             response.sendRedirect(request.getContextPath() + "/eventList");
         } catch (Exception exc) {
             logger.error("Error while event deactivating", exc);

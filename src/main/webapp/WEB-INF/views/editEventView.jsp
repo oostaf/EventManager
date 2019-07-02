@@ -85,7 +85,7 @@
             <label for="addressField">Address</label>
         </div>
         <div class="col-sm-5">
-            <input type="text" class="form-control" id="addressField" value="${event.address}" name="address" required>
+            <input type="text" class="form-control" id="addressField" value="${event.location.address}" name="location" required>
             <div class="invalid-feedback">
                 Address field could not be empty.
             </div>

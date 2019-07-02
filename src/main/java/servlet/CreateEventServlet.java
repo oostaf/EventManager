@@ -1,9 +1,13 @@
 package servlet;
 
 import model.Event;
+import model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.EventService;
 import service.EventServiceImp;
+import service.LocationService;
+import service.LocationServiceImp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,22 +40,28 @@ public class CreateEventServlet extends HttpServlet {
         try {
             String name = request.getParameter("name");
             String description = request.getParameter("description");
-            String address = request.getParameter("address");
+            String address = request.getParameter("location");
             double cost = Double.parseDouble(request.getParameter("price"));
             String dateFromRequest = request.getParameter("date");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
             LocalDateTime formatDateTime = LocalDateTime.parse(dateFromRequest, formatter);
 
+            Location location = new Location();
+            location.setAddress(address);
+            LocationService locationService = new LocationServiceImp();
+            locationService.addLocation(location);
+            location = locationService.getLocationByAddress(address);
+
             Event event = new Event();
             event.setName(name);
             event.setDescription(description);
-            event.setAddress(address);
+            event.setLocation(location);
             event.setCost(cost);
             event.setDate(formatDateTime);
 
-            EventServiceImp eventServiceImp = new EventServiceImp();
-            eventServiceImp.addEvent(event);
+            EventService eventService = new EventServiceImp();
+            eventService.addEvent(event);
 
             request.setAttribute("event", event);
 

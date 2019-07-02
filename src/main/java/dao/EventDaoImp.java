@@ -1,6 +1,7 @@
 package dao;
 
 import model.Event;
+import model.Location;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,9 +12,9 @@ import java.util.List;
 
 public class EventDaoImp implements EventDao {
 
-    private static final String INSERT_EVENT_QUERY = "INSERT INTO event(name, description, address, cost, date, is_active)" +
+    private static final String INSERT_EVENT_QUERY = "INSERT INTO event(name, description, address_id, cost, date, is_active)" +
             "VALUES (?, ?, ?, ?, ?, ?);";
-    private static final String UPDATE_ALL_FIELD_QUERY = "UPDATE event SET name=?, description=?, address=?, cost=?, date=?, is_active=?" +
+    private static final String UPDATE_ALL_FIELD_QUERY = "UPDATE event SET name=?, description=?, address_id=?, cost=?, date=?, is_active=?" +
             "WHERE id=?;";
     private static final String DEACTIVATE_BY_ID_QUERY = "UPDATE event SET is_active=? WHERE id=?;";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM public.event";
@@ -27,7 +28,7 @@ public class EventDaoImp implements EventDao {
 
             preparedStatement.setString(1, event.getName());
             preparedStatement.setString(2, event.getDescription());
-            preparedStatement.setString(3, event.getAddress());
+            preparedStatement.setInt(3, event.getLocation().getId());
             preparedStatement.setDouble(4, event.getCost());
             preparedStatement.setTimestamp(5, Timestamp.valueOf(event.getDate()));
             preparedStatement.setBoolean(6, true);
@@ -43,7 +44,7 @@ public class EventDaoImp implements EventDao {
             PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(UPDATE_ALL_FIELD_QUERY);
             preparedStatement.setString(1, event.getName());
             preparedStatement.setString(2, event.getDescription());
-            preparedStatement.setString(3, event.getAddress());
+            preparedStatement.setInt(3, event.getLocation().getId());
             preparedStatement.setDouble(4, event.getCost());
             preparedStatement.setTimestamp(5, Timestamp.valueOf(event.getDate()));
             preparedStatement.setBoolean(6, event.getActive());
@@ -110,7 +111,9 @@ public class EventDaoImp implements EventDao {
             event.setId(resultSet.getInt("id"));
             event.setName(resultSet.getString("name"));
             event.setActive(resultSet.getBoolean("is_active"));
-            event.setAddress(resultSet.getString("address"));
+            Location location = new Location();
+            location.setId(resultSet.getInt("address_id"));
+            event.setLocation(location);
             event.setCost(resultSet.getDouble("cost"));
             event.setDate(resultSet.getTimestamp("date").toLocalDateTime());
             event.setDescription(resultSet.getString("description"));
