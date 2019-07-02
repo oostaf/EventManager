@@ -6,13 +6,9 @@
 <html>
 <head>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-    <script src="<c:url value="/resources/js/typeahead.bundle.js" />"></script>
-    <script src="<c:url value="/resources/js/typeahead.bundle.min.js"/>"></script>
-    <script src="<c:url value="/resources/js/typeahead.jquery.js" />"></script>
-    <script src="<c:url value="/resources/js/typeahead.jquery.min.js" />"></script>
-    <script src="<c:url value="/resources/js/bloodhound.js" />"></script>
-    <script src="<c:url value="/resources/js/bloodhound.min.js"/>"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/themes/material_blue.css">
 
@@ -32,7 +28,7 @@
 </head>
 <body>
 <script>
-    var today  = new Date().toLocaleDateString("en-US");
+    var today = new Date().toLocaleDateString("en-US");
     $(function () {
         $("#dateField").flatpickr({
             enableTime: true,
@@ -57,47 +53,35 @@
         }, false);
     })();
 
-    var substringMatcher = function(strs) {
-        return function findMatches(q, cb) {
-            var matches, substringRegex;
-
-            // an array that will be populated with substring matches
-            matches = [];
-
-            // regex used to determine if a string contains the substring `q`
-            substrRegex = new RegExp(q, 'i');
-
-            // iterate through the pool of strings and for any string that
-            // contains the substring `q`, add it to the `matches` array
-            $.each(strs, function(i, str) {
-                if (substrRegex.test(str)) {
-                    matches.push(str);
-                }
-            });
-            cb(matches);
-        };
-    };
-
-    var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-        'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-        'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-        'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-        'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-        'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-        'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-        'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-        'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-    ];
-
-    $('.typeahead').typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-        },
-        {
-            name: 'states',
-            source: substringMatcher(states)
+    $( function() {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $( "#addressField" ).autocomplete({
+            source: ${addresses}
         });
+    } );
 
 </script>
 
@@ -132,7 +116,10 @@
             <label for="addressField">Address</label>
         </div>
         <div class="col-sm-5">
-            <input type="text" class="form-control typeahead" autocomplete="off" id="addressField" value="${event.location.address}" name="location" required>
+            <div id="the-basics">
+                <input type="text" class="form-control" autocomplete="off" id="addressField"
+                       value="${event.location.address}" name="location" required>
+            </div>
             <div class="invalid-feedback">
                 Address field could not be empty.
             </div>

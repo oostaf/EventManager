@@ -52,8 +52,8 @@ public class EditEventServlet extends HttpServlet {
             int eventId = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             String description = request.getParameter("description");
-            String address = request.getParameter("location");
             double cost = Double.parseDouble(request.getParameter("cost"));
+            String address = request.getParameter("location");
             String dateFromRequest = request.getParameter("date");
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");

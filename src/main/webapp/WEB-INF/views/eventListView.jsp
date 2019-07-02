@@ -26,22 +26,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.3/css/mdb.min.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Event List</title>
-    <%--<style>
-        table {
-            border-collapse: collapse;
-            width: 80%;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-    </style>--%>
-
     <script>
         $(document).ready(function () {
             // For A Delete Record Popup
@@ -51,13 +35,6 @@
                 $('.deactivateEvent').attr("href", id);
             });
         });
-
-/*
-        $(document).ready(function () {
-            $('#eventTable').DataTable();
-            $('.dataTables_length').addClass('bs-select');
-        });
-*/
 
     </script>
 </head>

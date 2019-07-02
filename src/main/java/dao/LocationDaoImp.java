@@ -5,10 +5,13 @@ import model.Location;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationDaoImp implements LocationDao {
 
     private static final String SELECT_LOCATION_BY_ID_QUERY = "SELECT * FROM public.location WHERE id=?;";
+    private static final String SELECT_ALL_ADDRESSES_QUERY = "SELECT address FROM public.location;";
     private static final String SELECT_LOCATION_BY_ADDRESS_QUERY = "SELECT * FROM public.location WHERE address=?;";
     private static final String INSERT_LOCATION_QUERY = "INSERT INTO public.location(address) VALUES (?) ON CONFLICT DO NOTHING;";
     private static final String UPDATE_LOCATION_QUERY = "UPDATE public.location SET address=? WHERE id=?;";
@@ -82,6 +85,25 @@ public class LocationDaoImp implements LocationDao {
             preparedStatement.execute();
         } catch (SQLException exc) {
             throw new RuntimeException(String.format("Fail to update location address by id=%d", location.getId()), exc);
+        }
+    }
+
+    @Override
+    public List<String> getAllAddresses() {
+        try {
+            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(SELECT_ALL_ADDRESSES_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet != null) {
+                List<String> addressesList = new ArrayList<>();
+                while (resultSet.next()){
+                    addressesList.add(resultSet.getString("address"));
+                }
+                return addressesList;
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException("Fail to get all addresses", e);
         }
     }
 

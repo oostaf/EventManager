@@ -2,6 +2,8 @@ package service;
 
 import model.Location;
 
+import java.util.List;
+
 public interface LocationService {
 
     Location getLocationByAddress(String address);
@@ -13,4 +15,6 @@ public interface LocationService {
     void deleteLocationByID(int id);
 
     void updateLocation(Location location);
+
+    List<String> getAllAddresses();
 }

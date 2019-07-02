@@ -18,17 +18,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @WebServlet(urlPatterns = {"/createEvent"})
 public class CreateEventServlet extends HttpServlet {
     Logger logger = LoggerFactory.getLogger(CreateEventServlet.class);
+    LocationService locationService;
 
     public CreateEventServlet() {
         super();
+        locationService = new LocationServiceImp();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //For typeahead
+        List<String> addresses = locationService.getAllAddresses();
+        request.setAttribute("addresses", addresses);
 
         RequestDispatcher dispatcher = request.getServletContext()
                 .getRequestDispatcher("/WEB-INF/views/createEventView.jsp");
@@ -49,7 +55,6 @@ public class CreateEventServlet extends HttpServlet {
 
             Location location = new Location();
             location.setAddress(address);
-            LocationService locationService = new LocationServiceImp();
             locationService.addLocation(location);
             location = locationService.getLocationByAddress(address);
 

@@ -4,6 +4,8 @@ import dao.LocationDao;
 import dao.LocationDaoImp;
 import model.Location;
 
+import java.util.List;
+
 public class LocationServiceImp implements LocationService {
     private LocationDao locationDaoImp;
 
@@ -35,5 +37,10 @@ public class LocationServiceImp implements LocationService {
     public void updateLocation(Location location) {
         LocationDaoImp locationDaoImp = new LocationDaoImp();
         locationDaoImp.updateLocation(location);
+    }
+
+    @Override
+    public List<String> getAllAddresses() {
+        return locationDaoImp.getAllAddresses();
     }
 }
