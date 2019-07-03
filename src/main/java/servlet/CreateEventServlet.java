@@ -32,13 +32,20 @@ public class CreateEventServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //For typeahead
-        List<String> addresses = locationService.getAllAddresses();
-        request.setAttribute("addresses", addresses);
+        try {
+            //For typeahead
+            List<Location> locations = locationService.getAllLocations();
+            request.setAttribute("locations", locations);
 
-        RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/createEventView.jsp");
-        dispatcher.forward(request, response);
+            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/WEB-INF/views/createEventView.jsp");
+            dispatcher.forward(request, response);
+        }catch (Exception exc){
+            logger.info("Exception was received during create event page loading:", exc);
+            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/WEB-INF/views/oops.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     @Override

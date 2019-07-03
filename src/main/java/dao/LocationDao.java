@@ -16,5 +16,5 @@ public interface LocationDao {
 
     void updateLocation(Location location);
 
-    List<String> getAllAddresses();
+    List<Location> getAllLocations();
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public class LocationServiceImp implements LocationService {
     private LocationDao locationDaoImp;
 
-    public LocationServiceImp(){
+    public LocationServiceImp() {
         locationDaoImp = new LocationDaoImp();
     }
 
@@ -40,7 +40,7 @@ public class LocationServiceImp implements LocationService {
     }
 
     @Override
-    public List<String> getAllAddresses() {
-        return locationDaoImp.getAllAddresses();
+    public List<Location> getAllLocations() {
+        return locationDaoImp.getAllLocations();
     }
 }

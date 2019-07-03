@@ -11,7 +11,7 @@ import java.util.List;
 public class LocationDaoImp implements LocationDao {
 
     private static final String SELECT_LOCATION_BY_ID_QUERY = "SELECT * FROM public.location WHERE id=?;";
-    private static final String SELECT_ALL_ADDRESSES_QUERY = "SELECT address FROM public.location;";
+    private static final String SELECT_ALL_LOCATIONS_QUERY = "SELECT * FROM public.location;";
     private static final String SELECT_LOCATION_BY_ADDRESS_QUERY = "SELECT * FROM public.location WHERE address=?;";
     private static final String INSERT_LOCATION_QUERY = "INSERT INTO public.location(address) VALUES (?) ON CONFLICT DO NOTHING;";
     private static final String UPDATE_LOCATION_QUERY = "UPDATE public.location SET address=? WHERE id=?;";
@@ -89,17 +89,17 @@ public class LocationDaoImp implements LocationDao {
     }
 
     @Override
-    public List<String> getAllAddresses() {
+    public List<Location> getAllLocations() {
         try {
-            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(SELECT_ALL_ADDRESSES_QUERY);
+            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(SELECT_ALL_LOCATIONS_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet != null) {
-                List<String> addressesList = new ArrayList<>();
-                while (resultSet.next()){
-                    addressesList.add(resultSet.getString("address"));
+                List<Location> locationsList = new ArrayList<>();
+                while (resultSet.next()) {
+                    locationsList.add(parseLocationResultSet(resultSet));
                 }
-                return addressesList;
+                return locationsList;
             }
             return null;
         } catch (SQLException e) {

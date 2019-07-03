@@ -53,39 +53,24 @@
         }, false);
     })();
 
-    $( function() {
-        var availableTags = [
-            "ActionScript",
-            "AppleScript",
-            "Asp",
-            "BASIC",
-            "C",
-            "C++",
-            "Clojure",
-            "COBOL",
-            "ColdFusion",
-            "Erlang",
-            "Fortran",
-            "Groovy",
-            "Haskell",
-            "Java",
-            "JavaScript",
-            "Lisp",
-            "Perl",
-            "PHP",
-            "Python",
-            "Ruby",
-            "Scala",
-            "Scheme"
+    $(function () {
+        var locationsList = [
+            <c:forEach items="${locations}" var="location" varStatus="status">
+            '${location.address}'
+            <c:if test="${!status.last}">
+            ,
+            </c:if>
+            </c:forEach>
         ];
-        $( "#addressField" ).autocomplete({
-            source: ${addresses}
+        $("#addressField").autocomplete({
+            source: locationsList
         });
-    } );
+    });
 
 </script>
 
 <jsp:include page="navigationPanel.jsp"></jsp:include>
+
 <form class="border border-light p-5 needs-validation" method="POST"
       action="${pageContext.request.contextPath}/createEvent" novalidate>
     <p class="h4 mb-4">Create Event</p>

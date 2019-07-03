@@ -5,8 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-    <%--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>--%>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Bootstrap tooltips -->
     <script type="text/javascript"
@@ -26,6 +24,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.3/css/mdb.min.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Event List</title>
+
     <script>
         $(document).ready(function () {
             // For A Delete Record Popup
@@ -36,24 +35,28 @@
             });
         });
 
+        $(document).ready(function () {
+            $('#eventTable').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
     </script>
 </head>
 <body>
-<jsp:include page="navigationPanel.jsp"></jsp:include>
+<%--<jsp:include page="navigationPanel.jsp"></jsp:include>--%>
 
 <h3>Event List</h3>
 <div class="border border-light p-5">
-    <table id="eventTable" class="table table-striped table-bordered" width="80%">
+    <table id="eventTable" class="table table-striped table-bordered table-sm" width="80%">
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Address</th>
-            <th>Price</th>
-            <th>Date</th>
-            <th>Is Active</th>
-            <th>Edit</th>
-            <th>Deactivate</th>
+            <th class="th-sm">Id</th>
+            <th class="th-sm">Name</th>
+            <th class="th-sm">Description</th>
+            <th class="th-sm">Address</th>
+            <th class="th-sm">Price</th>
+            <th class="th-sm">Date</th>
+            <th class="th-sm">Is Active</th>
+            <th class="th-sm">Edit</th>
+            <th class="th-sm">Deactivate</th>
         </tr>
         <c:forEach items="${eventList}" var="event">
             <tr>
@@ -66,7 +69,7 @@
                 <td>${parsedDate}</td>
                 <td>${event.active}</td>
                 <td>
-                    <a href="editEvent?id=${event.id}">Edit</a>
+                    <a class="btn btn-sm btn-primary btn-rounded" href="editEvent?id=${event.id}">Edit</a>
                 </td>
                 <td>
                     <button type="button" class="btn btn-sm btn-danger btn-rounded deactivate-event" data-toggle="modal"

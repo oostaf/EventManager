@@ -18,7 +18,10 @@ public class EventServiceImp implements EventService {
     }
 
     public Event getEventByID(int id) {
-        return eventDaoImp.getEventById(id);
+        LocationService locationService = new LocationServiceImp();
+        Event event = eventDaoImp.getEventById(id);
+        event.setLocation(locationService.getLocationById(event.getLocation().getId()));
+        return event;
     }
 
     public void addEvent(Event event) {

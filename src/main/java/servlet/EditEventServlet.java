@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.EventService;
 import service.EventServiceImp;
+import service.LocationService;
 import service.LocationServiceImp;
 
 import javax.servlet.RequestDispatcher;
@@ -17,31 +18,42 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @WebServlet(urlPatterns = {"/editEvent"})
 public class EditEventServlet extends HttpServlet {
 
     Logger logger = LoggerFactory.getLogger(CreateEventServlet.class);
+    LocationService locationService;
 
     public EditEventServlet() {
         super();
+        locationService = new LocationServiceImp();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            int eventId = Integer.parseInt(request.getParameter("id"));
+            EventService eventService = new EventServiceImp();
+            Event event = eventService.getEventByID(eventId);
+            if (event == null) {
+                RequestDispatcher dispatcher = request.getServletContext()
+                        .getRequestDispatcher("/WEB-INF/views/oops.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                request.setAttribute("event", event);
+                List<Location> locations = locationService.getAllLocations();
+                request.setAttribute("locations", locations);
 
-        int eventId = Integer.parseInt(request.getParameter("id"));
-        EventService eventService = new EventServiceImp();
-        Event event = eventService.getEventByID(eventId);
-        if (event == null) {
+                RequestDispatcher dispatcher = request.getServletContext()
+                        .getRequestDispatcher("/WEB-INF/views/editEventView.jsp");
+                dispatcher.forward(request, response);
+            }
+        } catch (Exception exc) {
+            logger.info("Exception was received during create event page loading:", exc);
             RequestDispatcher dispatcher = request.getServletContext()
                     .getRequestDispatcher("/WEB-INF/views/oops.jsp");
-            dispatcher.forward(request, response);
-        } else {
-            request.setAttribute("event", event);
-
-            RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/editEventView.jsp");
             dispatcher.forward(request, response);
         }
     }
@@ -61,9 +73,8 @@ public class EditEventServlet extends HttpServlet {
 
             Location location = new Location();
             location.setAddress(address);
-            LocationServiceImp locationServiceImp = new LocationServiceImp();
-            locationServiceImp.addLocation(location);
-            location = locationServiceImp.getLocationByAddress(address);
+            locationService.addLocation(location);
+            location = locationService.getLocationByAddress(address);
 
             EventServiceImp eventServiceImp = new EventServiceImp();
             Event event = eventServiceImp.getEventByID(eventId);
