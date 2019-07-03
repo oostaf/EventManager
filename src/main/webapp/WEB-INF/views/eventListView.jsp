@@ -6,6 +6,8 @@
 <html>
 <head>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- MDBootstrap Datatables  -->
+    <script type="text/javascript" src="<c:url value="/resources/js/datatables.min.js"></c:url>"></script>
     <!-- Bootstrap tooltips -->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
@@ -15,6 +17,11 @@
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.3/js/mdb.min.js"></script>
 
+    <!--  Flatpickr  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/themes/material_blue.css">
+
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -22,6 +29,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.3/css/mdb.min.css" rel="stylesheet">
+    <link href="<c:url value="/resources/css/datatables.min.css"></c:url>" rel="stylesheet">
+    <link href="<c:url value="/resources/css/table.css"></c:url>" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Event List</title>
 
@@ -36,17 +45,63 @@
         });
 
         $(document).ready(function () {
-            $('#eventTable').DataTable();
+            $('#eventTable').DataTable({
+                "searching": false // false to disable search (or any other option)
+            });
             $('.dataTables_length').addClass('bs-select');
+        });
+
+        Date.prototype.addDays = function (days) {
+            var date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        }
+
+
+        var today = new Date();
+        var week = today.addDays(7);
+        $(function () {
+            $(".flatpickr").flatpickr({
+                wrap: true,
+                mode: "range",
+                dateFormat: "m-d-Y",
+                defaultDate: [today.toLocaleDateString("en-US"), week.toLocaleDateString("en-US")]
+            });
         });
     </script>
 </head>
 <body>
-<%--<jsp:include page="navigationPanel.jsp"></jsp:include>--%>
+<jsp:include page="navigationPanel.jsp"></jsp:include>
 
 <h3>Event List</h3>
+
+
 <div class="border border-light p-5">
-    <table id="eventTable" class="table table-striped table-bordered table-sm" width="80%">
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <div class="input-group md-form form-sm form-1 pl-0">
+                <div class="input-group-prepend">
+    <span class="input-group-text cyan lighten-2" id="basic-text1">
+        <i class="fas fa-search text-white" aria-hidden="true"></i></span>
+                </div>
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="flatpickr">
+                <input type="text" id="searchDateField" class="form-control" name="date" value="${event.date}"
+                       data-input>
+                <a class="btn-floating btn-sm btn-secondary" title="toggle" data-toggle>
+                    <i class="fa fa-calendar"></i>
+                </a>
+                <a class="btn-floating btn-sm btn-secondary" title="clear" data-clear>
+                    <i class="fa fa-window-close"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <table id="eventTable" class="table table-bordered table-sm" width="100%">
+        <thead>
         <tr>
             <th class="th-sm">Id</th>
             <th class="th-sm">Name</th>
@@ -58,6 +113,8 @@
             <th class="th-sm">Edit</th>
             <th class="th-sm">Deactivate</th>
         </tr>
+        </thead>
+        <tbody>
         <c:forEach items="${eventList}" var="event">
             <tr>
                 <td>${event.id}</td>
@@ -80,6 +137,7 @@
                 </td>
             </tr>
         </c:forEach>
+        </tbody>
     </table>
 </div>
 

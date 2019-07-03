@@ -24,8 +24,7 @@ public class LocationDaoImp implements LocationDao {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet != null) {
-                resultSet.next();
+            if (resultSet.next()) {
                 return parseLocationResultSet(resultSet);
             }
             return null;
@@ -41,8 +40,7 @@ public class LocationDaoImp implements LocationDao {
             preparedStatement.setString(1, address);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet != null) {
-                resultSet.next();
+            if (resultSet.next()) {
                 return parseLocationResultSet(resultSet);
             }
             return null;
@@ -94,14 +92,11 @@ public class LocationDaoImp implements LocationDao {
             PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(SELECT_ALL_LOCATIONS_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet != null) {
-                List<Location> locationsList = new ArrayList<>();
-                while (resultSet.next()) {
-                    locationsList.add(parseLocationResultSet(resultSet));
-                }
-                return locationsList;
+            List<Location> locationsList = new ArrayList<>();
+            while (resultSet.next()) {
+                locationsList.add(parseLocationResultSet(resultSet));
             }
-            return null;
+            return locationsList;
         } catch (SQLException e) {
             throw new RuntimeException("Fail to get all addresses", e);
         }

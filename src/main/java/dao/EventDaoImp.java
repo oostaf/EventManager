@@ -95,8 +95,7 @@ public class EventDaoImp implements EventDao {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet != null) {
-                resultSet.next();
+            if (resultSet.next()) {
                 return parseResultSet(resultSet);
             }
             return null;
