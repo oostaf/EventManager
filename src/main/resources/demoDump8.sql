@@ -5,7 +5,7 @@
 -- Dumped from database version 10.9
 -- Dumped by pg_dump version 10.9
 
--- Started on 2019-07-03 19:42:03
+-- Started on 2019-07-05 15:26:09
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2817 (class 0 OID 0)
+-- TOC entry 2818 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -74,7 +74,7 @@ CREATE SEQUENCE public."Event_Id_seq"
 ALTER TABLE public."Event_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 2818 (class 0 OID 0)
+-- TOC entry 2819 (class 0 OID 0)
 -- Dependencies: 197
 -- Name: Event_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -112,7 +112,7 @@ CREATE SEQUENCE public.location_id_seq
 ALTER TABLE public.location_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2819 (class 0 OID 0)
+-- TOC entry 2820 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: location_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -137,7 +137,7 @@ ALTER TABLE ONLY public.location ALTER COLUMN id SET DEFAULT nextval('public.loc
 
 
 --
--- TOC entry 2806 (class 0 OID 141944)
+-- TOC entry 2807 (class 0 OID 141944)
 -- Dependencies: 196
 -- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -176,10 +176,11 @@ INSERT INTO public.event (is_active, name, description, cost, date, id, address_
 INSERT INTO public.event (is_active, name, description, cost, date, id, address_id) VALUES (true, 'iwbDgFKzwx grZJMeWBm', 'QFtoMjGPBK FHBsxuUlw RjNvrPveTz', 305, '2020-06-25 16:00:00', 28, 29);
 INSERT INTO public.event (is_active, name, description, cost, date, id, address_id) VALUES (true, 'tKKPEZYrmC pSnFdFCrK', 'bONPSxmVtF vlzVywlKd dJMlJJyrZL', 485, '2020-06-25 16:00:00', 29, 19);
 INSERT INTO public.event (is_active, name, description, cost, date, id, address_id) VALUES (true, 'EtfYQaiGfa aVVSZCfpd', 'NjDGmZvgAe cOtqNCoAZ aBySXNSnOU', 27, '2020-06-25 16:00:00', 30, 31);
+INSERT INTO public.event (is_active, name, description, cost, date, id, address_id) VALUES (false, 'tomcat run edit', 'first run from tomcat', 150, '2020-01-10 17:00:00', 31, 6);
 
 
 --
--- TOC entry 2809 (class 0 OID 166520)
+-- TOC entry 2810 (class 0 OID 166520)
 -- Dependencies: 199
 -- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -218,21 +219,21 @@ INSERT INTO public.location (id, address) VALUES (38, '9349 Wayne Dr. Marquette,
 
 
 --
--- TOC entry 2820 (class 0 OID 0)
+-- TOC entry 2821 (class 0 OID 0)
 -- Dependencies: 197
 -- Name: Event_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Event_Id_seq"', 30, true);
+SELECT pg_catalog.setval('public."Event_Id_seq"', 31, true);
 
 
 --
--- TOC entry 2821 (class 0 OID 0)
+-- TOC entry 2822 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: location_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.location_id_seq', 38, true);
+SELECT pg_catalog.setval('public.location_id_seq', 40, true);
 
 
 --
@@ -245,7 +246,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- TOC entry 2681 (class 2606 OID 166525)
+-- TOC entry 2682 (class 2606 OID 166525)
 -- Name: location location_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -254,7 +255,7 @@ ALTER TABLE ONLY public.location
 
 
 --
--- TOC entry 2683 (class 2606 OID 166532)
+-- TOC entry 2684 (class 2606 OID 166532)
 -- Name: location unique_address_column; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -263,7 +264,15 @@ ALTER TABLE ONLY public.location
 
 
 --
--- TOC entry 2684 (class 2606 OID 166526)
+-- TOC entry 2680 (class 1259 OID 166558)
+-- Name: cost_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX cost_index ON public.event USING btree (cost);
+
+
+--
+-- TOC entry 2685 (class 2606 OID 166526)
 -- Name: event event_location_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -271,7 +280,7 @@ ALTER TABLE ONLY public.event
     ADD CONSTRAINT event_location_fkey FOREIGN KEY (address_id) REFERENCES public.location(id);
 
 
--- Completed on 2019-07-03 19:42:03
+-- Completed on 2019-07-05 15:26:09
 
 --
 -- PostgreSQL database dump complete
