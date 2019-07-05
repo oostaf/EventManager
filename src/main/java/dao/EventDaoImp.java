@@ -19,7 +19,7 @@ public class EventDaoImp implements EventDao {
     private static final String DEACTIVATE_BY_ID_QUERY = "UPDATE event SET is_active=? WHERE id=?;";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM public.event";
     private static final String GET_EVENT_BY_ID_QUERY = "SELECT * FROM event WHERE id=?";
-
+    private static final String GET_MAX_COST_QUERY = "SELECT MAX(cost) as cost FROM public.event;";
 
     @Override
     public void addEvent(Event event) {
@@ -101,6 +101,20 @@ public class EventDaoImp implements EventDao {
             return null;
         } catch (SQLException e) {
             throw new RuntimeException("Fail to set event params", e);
+        }
+    }
+
+    @Override
+    public double getMaxEventsCost() {
+        try{
+            PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(GET_MAX_COST_QUERY);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return resultSet.getDouble("cost");
+            }
+            throw new RuntimeException("Fail to get max events cost. ResultSet is empty");
+        }catch (SQLException e) {
+            throw new RuntimeException("Fail to get max events cost", e);
         }
     }
 

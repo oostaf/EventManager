@@ -38,4 +38,8 @@ public class EventServiceImp implements EventService {
         eventDaoImp.deactivateEvent(event);
     }
 
+    public double getMaxEventsCost() {
+        return eventDaoImp.getMaxEventsCost();
+    }
+
 }

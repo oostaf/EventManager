@@ -17,6 +17,9 @@
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.3/js/mdb.min.js"></script>
 
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <!--  Flatpickr  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
@@ -46,7 +49,11 @@
 
         $(document).ready(function () {
             $('#eventTable').DataTable({
-                "searching": false // false to disable search (or any other option)
+                "searching": false,// false to disable search (or any other option)
+                columnDefs: [{
+                    orderable: false,
+                    targets: [7, 8]
+                }]
             });
             $('.dataTables_length').addClass('bs-select');
         });
@@ -68,6 +75,37 @@
                 defaultDate: [today.toLocaleDateString("en-US"), week.toLocaleDateString("en-US")]
             });
         });
+
+        $(document).ready(function () {
+            $('.searchButton').click(function () {
+                var searchBySelect = $('#searchSelect').val();
+                var searchPriceVal = $('#amount').val();
+                var searchTextVal = $('.searchText').val();
+                var searchDatesVal = $('.searchDates').val();
+                $('.searchButton').attr("href", "searchEvents?searchText=" + searchTextVal + "&searchDates=" + searchDatesVal +
+                    "&searchBy=" + searchBySelect + "&searchPrice=" + searchPriceVal);
+            });
+        });
+
+        $(function () {
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: ${maxEventsCost},
+                values: [${minSelectedEventsCost}, ${maxSelectedEventsCost}],
+                slide: function (event, ui) {
+                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                }
+            });
+            $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+                " - $" + $("#slider-range").slider("values", 1));
+        });
+        $(document).ready(function () {
+            document.getElementById('searchSelect').value = "${selectValue}";
+            if ("${searchDates}"!="") {
+                document.getElementById('searchDateField').value = "${searchDates}";
+            }
+        });
     </script>
 </head>
 <body>
@@ -78,25 +116,44 @@
 
 <div class="border border-light p-5">
     <div class="form-group row">
-        <div class="col-sm-4">
-            <div class="input-group md-form form-sm form-1 pl-0">
-                <div class="input-group-prepend">
-    <span class="input-group-text cyan lighten-2" id="basic-text1">
-        <i class="fas fa-search text-white" aria-hidden="true"></i></span>
+        <div class="col-sm-1 input-group md-form form-sm form-2 pl-0">
+            <select id="searchSelect" class="browser-default custom-select input-group-text blue lighten-3">
+                <option value="default" disabled selected>Search by:</option>
+                <option value="searchByName">Name</option>
+                <option value="searchByDescription">Description</option>
+                <option value="searchByAddress">Address</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <div class="input-group md-form form-sm form-2 pl-0">
+                <input class="form-control searchText my-0 py-1 red-border" type="text" placeholder="Search"
+                       aria-label="Search" value="${searchText}">
+                <div class="input-group-append">
+                    <span class="input-group-text blue lighten-3" id="basic-text1"><i class="fas fa-search text-grey"
+                                                                                      aria-hidden="true"></i></span>
                 </div>
-                <input class="form-control" type="text" placeholder="Search" aria-label="Search">
             </div>
         </div>
-        <div class="col-sm-3">
-            <div class="flatpickr">
-                <input type="text" id="searchDateField" class="form-control" name="date" value="${event.date}"
-                       data-input>
-                <a class="btn-floating btn-sm btn-secondary" title="toggle" data-toggle>
-                    <i class="fa fa-calendar"></i>
-                </a>
-                <a class="btn-floating btn-sm btn-secondary" title="clear" data-clear>
+        <div class="col-sm-2">
+            <div class="input-group md-form form-sm form-2 pl-0 flatpickr">
+                <input type="text" id="searchDateField" class="searchDates form-control my-0 py-1" name="date"
+                       value="${searchDates}" data-input>
+                <button class="clear_button input-group-text blue lighten-3" title="clear" data-clear>
                     <i class="fa fa-window-close"></i>
-                </a>
+                </button>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <p>
+                <label for="amount">Price range:</label>
+                <input type="text" id="amount" readonly style="border:0; color:#4285f4; font-weight:bold;">
+            </p>
+            <div id="slider-range" class="input-group-text blue lighten-3"></div>
+        </div>
+        <div class="col-sm-1">
+            <div class="input-group md-form form-sm form-2 pl-0">
+                <a class="btn searchButton btn-rounded blue lighten-3 btn-sm my-0" type="submit"
+                   href="${myURL}">Search</a>
             </div>
         </div>
     </div>
@@ -121,7 +178,7 @@
                 <td>${event.name}</td>
                 <td>${event.description}</td>
                 <td>${event.location.address}</td>
-                <td>${event.cost}</td>
+                <td>$${event.cost}</td>
                 <javatime:format value="${event.date}" pattern="yyyy-MM-dd HH:mm" var="parsedDate"/>
                 <td>${parsedDate}</td>
                 <td>${event.active}</td>
@@ -129,7 +186,8 @@
                     <a class="btn btn-sm btn-primary btn-rounded" href="editEvent?id=${event.id}">Edit</a>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-sm btn-danger btn-rounded deactivate-event" data-toggle="modal"
+                    <button type="button" class="btn btn-sm btn-danger btn-rounded deactivate-event"
+                            data-toggle="modal"
                             data-target="#deactivateModal" data-whatever="${event.id}"
                             data-id="deactivateEvent?id=${event.id}">
                         Deactivate
@@ -163,9 +221,6 @@
         </div>
     </div>
 </div>
-
-<%--<a href="createEvent">Create Event</a>--%>
-
 
 </body>
 </html>

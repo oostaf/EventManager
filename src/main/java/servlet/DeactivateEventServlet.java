@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/deactivateEvent"})
 public class DeactivateEventServlet extends HttpServlet {
 
-    Logger logger = LoggerFactory.getLogger(CreateEventServlet.class);
+    Logger logger = LoggerFactory.getLogger(DeactivateEventServlet.class);
 
     public DeactivateEventServlet() {
         super();

@@ -23,7 +23,7 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/editEvent"})
 public class EditEventServlet extends HttpServlet {
 
-    Logger logger = LoggerFactory.getLogger(CreateEventServlet.class);
+    Logger logger = LoggerFactory.getLogger(EditEventServlet.class);
     LocationService locationService;
 
     public EditEventServlet() {

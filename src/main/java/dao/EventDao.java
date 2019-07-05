@@ -16,4 +16,6 @@ public interface EventDao {
 
     Event getEventById(int id);
 
+    double getMaxEventsCost();
+
 }

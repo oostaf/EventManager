@@ -18,7 +18,7 @@
 <h3>Oops, something went wrong. Please contact your administrator</h3>
 <title>Oops, something went wrong. Please contact administrator</title>
 <div class="text-center">
-    <img src='<c:url value="/resources/images/oops.jpg"></c:url>' class="rounded img-thumbnail" alt="Oops">
+    <img src='<c:url value="/resources/images/oops.jpg"></c:url>' class="rounded img-thumbnail" alt="Oops" height="542" width="542">
 </div>
 </body>
 </html>

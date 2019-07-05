@@ -12,4 +12,5 @@ public interface SearchParamsDao {
     List<Event> searchEventsByAddress(SearchParamsDTO searchParamsDTO);
     List<Event> filterEventsByCost(SearchParamsDTO searchParamsDTO);
     List<Event> filterEventsByDate(SearchParamsDTO searchParamsDTO);
+    List<Event> searchEventsDynamically(SearchParamsDTO searchParamsDTO);
 }

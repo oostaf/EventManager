@@ -1,29 +1,38 @@
 package dto;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class SearchParamsDTO {
 
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String name;
     private String address;
-    private double lowerCost;
-    private double highterCost;
+    private Double lowerCost;
+    private Double higherCost;
+    private String description;
 
-    public Date getStartDate() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -43,20 +52,20 @@ public class SearchParamsDTO {
         this.address = address;
     }
 
-    public double getLowerCost() {
+    public Double getLowerCost() {
         return lowerCost;
     }
 
-    public void setLowerCost(double lowerCost) {
+    public void setLowerCost(Double lowerCost) {
         this.lowerCost = lowerCost;
     }
 
-    public double getHighterCost() {
-        return highterCost;
+    public Double getHigherCost() {
+        return higherCost;
     }
 
-    public void setHighterCost(double highterCost) {
-        this.highterCost = highterCost;
+    public void setHigherCost(Double higherCost) {
+        this.higherCost = higherCost;
     }
 
 }

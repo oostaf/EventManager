@@ -1,8 +1,12 @@
 package servlet;
 
 import model.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import service.EventLocationService;
 import service.EventLocationServiceImp;
+import service.EventService;
+import service.EventServiceImp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +19,7 @@ import java.util.List;
 
 @WebServlet(urlPatterns = {"/eventList"})
 public class EventListServlet extends HttpServlet {
+    Logger logger = LoggerFactory.getLogger(EventListServlet.class);
 
     public EventListServlet() {
         super();
@@ -23,15 +28,27 @@ public class EventListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            EventLocationService eventLocationService = new EventLocationServiceImp();
+            List<Event> list = eventLocationService.getAllEventsJoinLocation();
+            request.setAttribute("eventList", list);
 
-        EventLocationService eventLocationService = new EventLocationServiceImp();
-        List<Event> list = eventLocationService.getAllEventsJoinLocation();
+            EventService eventService = new EventServiceImp();
+            double maxEventsCost = eventService.getMaxEventsCost();
+            request.setAttribute("maxEventsCost", maxEventsCost);
+            request.setAttribute("minSelectedEventsCost", 0);
+            request.setAttribute("maxSelectedEventsCost", maxEventsCost);
+            request.setAttribute("selectValue", "default");
 
-        request.setAttribute("eventList", list);
-
-        RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/WEB-INF/views/eventListView.jsp");
-        dispatcher.forward(request, response);
+            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/WEB-INF/views/eventListView.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception exc) {
+            logger.info("Exception was received during create event page loading:", exc);
+            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/WEB-INF/views/oops.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     @Override

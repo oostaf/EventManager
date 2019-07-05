@@ -8,7 +8,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String name, String description, Location location, double cost, LocalDateTime date) {
+    public Event(String name, String description, Location location, Double cost, LocalDateTime date) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -20,9 +20,9 @@ public class Event {
     private String name;
     private LocalDateTime date;
     private String description;
-    private double cost;
+    private Double cost;
     private Location location;
-    private boolean active;
+    private Boolean active;
 
     public Integer getId() {
         return id;
@@ -32,11 +32,11 @@ public class Event {
         this.id = id;
     }
 
-    public boolean getActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
@@ -56,11 +56,11 @@ public class Event {
         this.date = date;
     }
 
-    public double getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 

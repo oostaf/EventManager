@@ -16,4 +16,6 @@ public interface EventService {
 
     void deactivateEvent(int id);
 
+    double getMaxEventsCost();
+
 }
