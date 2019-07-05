@@ -31,6 +31,9 @@
                         <a class="nav-link" href="eventList">All events</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="newEventList">New events list</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="createEvent">Add event</a>
                     </li>
                 </ul>
