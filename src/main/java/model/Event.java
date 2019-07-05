@@ -1,6 +1,7 @@
 package model;
 
 
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public class Event {
@@ -17,11 +18,23 @@ public class Event {
     }
 
     private Integer id;
+
+    @NotEmpty(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be null")
     private String name;
+
+    @NotNull(message = "Date cannot be null")
     private LocalDateTime date;
+
     private String description;
+
+    @PositiveOrZero(message = "Cost should not be less than 0")
+    @NotNull(message = "Cost cannot be null")
     private Double cost;
+
+    @NotNull(message = "Location cannot be null")
     private Location location;
+
     private Boolean active;
 
     public Integer getId() {

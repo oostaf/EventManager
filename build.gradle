@@ -12,6 +12,12 @@ repositories {
 }
 
 dependencies {
+
+    compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
+    compile group: 'javax.el', name: 'javax.el-api', version: '3.0.1-b06'
+    compile group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '6.1.0.Alpha5'
+    compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.1.0.Alpha5'
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '2.0.0-alpha0'
     compile group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha0'
