@@ -69,19 +69,14 @@ public class SearchParamsDaoImp implements SearchParamsDao {
                 preparedStatement.setDouble(lastIndex, searchParamsDTO.getLowerCost());
                 lastIndex++;
                 preparedStatement.setDouble(lastIndex, searchParamsDTO.getHigherCost());
-//                lastIndex = 3;
             }
-            /*else if (searchParamsDTO.getLowerCost() != null && searchParamsDTO.getStartDate() != null) {
-                preparedStatement.setDouble(4, searchParamsDTO.getLowerCost());
-                preparedStatement.setDouble(5, searchParamsDTO.getHigherCost());
-                lastIndex = 5;
-            }*/
 
             if (searchParamsDTO.getEventsPerPage() != null && searchParamsDTO.getPageCount() != null) {
                 lastIndex++;
                 preparedStatement.setInt(lastIndex, searchParamsDTO.getEventsPerPage());
                 lastIndex++;
-                preparedStatement.setInt(lastIndex, searchParamsDTO.getEventsPerPage());
+                int offsetValue = (searchParamsDTO.getPageCount() - 1) * searchParamsDTO.getEventsPerPage();
+                preparedStatement.setInt(lastIndex, offsetValue);
             }
 
             ResultSet resultSet = preparedStatement.executeQuery();

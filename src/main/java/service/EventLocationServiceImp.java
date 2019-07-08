@@ -14,6 +14,12 @@ public class EventLocationServiceImp implements EventLocationService {
     }
 
     @Override
+    public List<Event> getAllEventsJoinLocation(int pageId) {
+        int offsetValue = (pageId - 1) * 5;//5 is a limit for now
+        return eventLocationDaoImp.getAllEventsJoinLocation(offsetValue);
+    }
+
+    @Override
     public List<Event> getAllEventsJoinLocation() {
         return eventLocationDaoImp.getAllEventsJoinLocation();
     }

@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface EventLocationDao {
 
+    List<Event> getAllEventsJoinLocation(int pageId);
+
     List<Event> getAllEventsJoinLocation();
 
     int getAllEventsJoinLocationCount();

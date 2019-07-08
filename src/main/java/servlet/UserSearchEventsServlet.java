@@ -37,6 +37,8 @@ public class UserSearchEventsServlet extends HttpServlet {
             String searchText = request.getParameter("searchText");
             String searchDates = request.getParameter("searchDates");
             String searchBy = request.getParameter("searchBy");
+            int pageId = Integer.parseInt(request.getParameter("pageId"));
+            request.setAttribute("pageId", pageId);
             if (searchBy.isEmpty()) {
                 request.setAttribute("selectValue", "default");
             } else {
@@ -46,6 +48,7 @@ public class UserSearchEventsServlet extends HttpServlet {
             request.setAttribute("searchDates", searchDates);
 
             SearchParamsDTO searchParamsDTO = new SearchParamsDTO();
+            searchParamsDTO.setPageCount(pageId);
             searchParamsDTO.setEventsPerPage(5);
 
             if (!searchText.isEmpty()) {

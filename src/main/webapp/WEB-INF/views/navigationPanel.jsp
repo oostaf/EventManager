@@ -25,13 +25,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="index.jsp">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="index.jsp">Home<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="eventList">All events</a>
+                        <a class="nav-link" href="eventList">Admin events list</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="newEventList">New events list</a>
+                        <a class="nav-link" href="newEventList?pageId=1">User events list</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="createEvent">Add event</a>

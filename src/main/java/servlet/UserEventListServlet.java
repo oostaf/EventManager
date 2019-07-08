@@ -31,8 +31,9 @@ public class UserEventListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            int pageId = Integer.parseInt(request.getParameter("pageId"));
             EventLocationService eventLocationService = new EventLocationServiceImp();
-            List<Event> list = eventLocationService.getAllEventsJoinLocation();
+            List<Event> list = eventLocationService.getAllEventsJoinLocation(pageId);
             request.setAttribute("eventList", list);
 
             EventService eventService = new EventServiceImp();
@@ -41,6 +42,7 @@ public class UserEventListServlet extends HttpServlet {
             request.setAttribute("minSelectedEventsCost", 0);
             request.setAttribute("maxEventsCost", maxEventsCost);
             request.setAttribute("selectValue", "default");
+            request.setAttribute("pageId", pageId);
 
             RequestDispatcher dispatcher = request.getServletContext()
                     .getRequestDispatcher("/WEB-INF/views/userEventListView.jsp");

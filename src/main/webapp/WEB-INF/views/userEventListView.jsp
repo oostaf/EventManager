@@ -59,9 +59,37 @@
                 var searchTextVal = $('.searchText').val();
                 var searchDatesVal = $('.searchDates').val();
                 $('.searchButton').attr("href", "searchOnNewEvents?searchText=" + searchTextVal + "&searchDates=" + searchDatesVal +
-                    "&searchBy=" + searchBySelect + "&searchPrice=" + searchPriceVal);
+                    "&searchBy=" + searchBySelect + "&searchPrice=" + searchPriceVal + "&pageId=" + "1");
             });
         });
+
+        function replaceUrlParam(url, paramName, paramValue) {
+            if (paramValue == null) {
+                paramValue = '';
+            }
+            var pattern = new RegExp('\\b(' + paramName + '=).*?(&|#|$)');
+            if (url.search(pattern) >= 0) {
+                return url.replace(pattern, '$1' + paramValue + '$2');
+            }
+            url = url.replace(/[?#]$/, '');
+            return url + (url.indexOf('?') > 0 ? '&' : '?') + paramName + '=' + paramValue;
+        }
+
+        $(document).ready(function () {
+            $('.page-item .page-link').click(function () {
+                var clickedPage = $(this).text();
+                if (window.location.href.toString().indexOf("pageId") >= 0) {
+                    var urlToGo = replaceUrlParam(window.location.pathname + window.location.search, "pageId", clickedPage);
+                }
+                else if (window.location.href.toString().indexOf("?") >= 0) {
+                    var urlToGo = window.location.pathname + window.location.search + "&pageId=" + clickedPage;
+                } else {
+                    var urlToGo = window.location.pathname + "?pageId=" + clickedPage;
+                }
+                $(this).attr("href", urlToGo)
+                $(this).className += " active";
+            })
+        })
 
         $(function () {
             $("#slider-range").slider({
@@ -77,6 +105,7 @@
                 " - $" + $("#slider-range").slider("values", 1));
         });
         $(document).ready(function () {
+            document.getElementsByClassName('page-link')[${pageId}].parentNode.classList.add("active");
             document.getElementById('searchSelect').value = "${selectValue}";
 
             if ("${searchDates}" != "") {
@@ -177,20 +206,20 @@
                             </a>
                         </li>
 
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
+                        <li class="page-item">
+                            <a class="page-link" href="">1</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="#">2</a>
+                            <a class="page-link" href="">2</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="#">3</a>
+                            <a class="page-link" href="">3</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="#">4</a>
+                            <a class="page-link" href="">4</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="#">5</a>
+                            <a class="page-link" href="">5</a>
                         </li>
 
                         <li class="page-item">
