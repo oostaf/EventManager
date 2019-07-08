@@ -64,7 +64,7 @@ public class SearchParamsDaoImp implements SearchParamsDao {
                 preparedStatement.setTimestamp(3, Timestamp.valueOf(searchParamsDTO.getEndDate()));
                 lastIndex = 3;
             }
-            if (searchParamsDTO.getLowerCost() != null && searchParamsDTO.getStartDate() == null) {
+            if (searchParamsDTO.getLowerCost() != null) {
                 lastIndex++;
                 preparedStatement.setDouble(lastIndex, searchParamsDTO.getLowerCost());
                 lastIndex++;
