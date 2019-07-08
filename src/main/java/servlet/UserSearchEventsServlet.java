@@ -20,12 +20,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/searchEvents"})
-public class SearchEventsServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/searchOnNewEvents"})
+public class UserSearchEventsServlet extends HttpServlet {
 
-    Logger logger = LoggerFactory.getLogger(SearchEventsServlet.class);
+    Logger logger = LoggerFactory.getLogger(UserSearchEventsServlet.class);
 
-    public SearchEventsServlet() {
+    public UserSearchEventsServlet() {
         super();
     }
 
@@ -46,6 +46,7 @@ public class SearchEventsServlet extends HttpServlet {
             request.setAttribute("searchDates", searchDates);
 
             SearchParamsDTO searchParamsDTO = new SearchParamsDTO();
+            searchParamsDTO.setEventsPerPage(5);
 
             if (!searchText.isEmpty()) {
                 switch (searchBy) {
@@ -97,7 +98,7 @@ public class SearchEventsServlet extends HttpServlet {
             request.setAttribute("maxEventsCost", maxEventsCost);
 
             RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/eventListView.jsp");
+                    .getRequestDispatcher("/WEB-INF/views/userEventListView.jsp");
             dispatcher.forward(request, response);
         } catch (Exception exc) {
             logger.info("Exception was received during create event page loading:", exc);

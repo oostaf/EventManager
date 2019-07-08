@@ -20,12 +20,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/searchOnNewEvents"})
-public class SearchNewEventsServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/searchEvents"})
+public class AdminSearchEventsServlet extends HttpServlet {
 
-    Logger logger = LoggerFactory.getLogger(SearchNewEventsServlet.class);
+    Logger logger = LoggerFactory.getLogger(AdminSearchEventsServlet.class);
 
-    public SearchNewEventsServlet() {
+    public AdminSearchEventsServlet() {
         super();
     }
 
@@ -34,16 +34,16 @@ public class SearchNewEventsServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             String searchPrice = request.getParameter("searchPrice");
-            String searchText = request.getParameter("searchText");
             String searchDates = request.getParameter("searchDates");
+            String searchText = request.getParameter("searchText");
             String searchBy = request.getParameter("searchBy");
             if (searchBy.isEmpty()) {
                 request.setAttribute("selectValue", "default");
             } else {
                 request.setAttribute("selectValue", searchBy);
             }
-            request.setAttribute("searchText", searchText);
             request.setAttribute("searchDates", searchDates);
+            request.setAttribute("searchText", searchText);
 
             SearchParamsDTO searchParamsDTO = new SearchParamsDTO();
 
@@ -54,12 +54,12 @@ public class SearchNewEventsServlet extends HttpServlet {
                         searchParamsDTO.setName(searchText);
                         break;
                     }
-                    case "searchByDescription": {
-                        searchParamsDTO.setDescription(searchText);
-                        break;
-                    }
                     case "searchByAddress": {
                         searchParamsDTO.setAddress(searchText);
+                        break;
+                    }
+                    case "searchByDescription": {
+                        searchParamsDTO.setDescription(searchText);
                         break;
                     }
                 }
@@ -70,8 +70,8 @@ public class SearchNewEventsServlet extends HttpServlet {
                 String[] searchPriceSplit = searchPrice.split("-");
                 String minSelectedEventsCost = searchPriceSplit[0].replaceAll("\\D+", "");
                 String maxSelectedEventsCost = searchPriceSplit[1].replaceAll("\\D+", "");
-                request.setAttribute("minSelectedEventsCost", minSelectedEventsCost);
                 request.setAttribute("maxSelectedEventsCost", maxSelectedEventsCost);
+                request.setAttribute("minSelectedEventsCost", minSelectedEventsCost);
                 //Set cost params in dto
                 searchParamsDTO.setLowerCost(Double.valueOf(minSelectedEventsCost));
                 searchParamsDTO.setHigherCost(Double.valueOf(maxSelectedEventsCost));
@@ -81,23 +81,22 @@ public class SearchNewEventsServlet extends HttpServlet {
             if (!searchDates.isEmpty()) {
                 String[] searchDatesSplit = searchDates.replaceAll("\\s+", "").split("to");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
-                LocalDateTime startedFormattedDate = LocalDateTime.parse(searchDatesSplit[0] + " 00:00", formatter);
                 LocalDateTime endedFormattedDate = LocalDateTime.parse(searchDatesSplit[1] + " 00:00", formatter);
+                LocalDateTime startedFormattedDate = LocalDateTime.parse(searchDatesSplit[0] + " 00:00", formatter);
                 //Set dates params to dto
                 searchParamsDTO.setStartDate(startedFormattedDate);
                 searchParamsDTO.setEndDate(endedFormattedDate);
             }
 
-            SearchService searchService = new SearchServiceImp();
-            List<Event> events = searchService.searchEventsDynamically(searchParamsDTO);
-            request.setAttribute("eventList", events);
-
             EventService eventService = new EventServiceImp();
             double maxEventsCost = eventService.getMaxEventsCost();
             request.setAttribute("maxEventsCost", maxEventsCost);
 
+            SearchService searchService = new SearchServiceImp();
+            List<Event> events = searchService.searchEventsDynamically(searchParamsDTO);
+            request.setAttribute("eventList", events);
             RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/eventsView.jsp");
+                    .getRequestDispatcher("/WEB-INF/views/adminEventListView.jsp");
             dispatcher.forward(request, response);
         } catch (Exception exc) {
             logger.info("Exception was received during create event page loading:", exc);

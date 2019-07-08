@@ -11,6 +11,24 @@ public class SearchParamsDTO {
     private Double lowerCost;
     private Double higherCost;
     private String description;
+    private Integer eventsPerPage;
+    private Integer pageCount;
+
+    public Integer getEventsPerPage() {
+        return eventsPerPage;
+    }
+
+    public void setEventsPerPage(Integer eventsPerPage) {
+        this.eventsPerPage = eventsPerPage;
+    }
+
+    public Integer getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(Integer pageCount) {
+        this.pageCount = pageCount;
+    }
 
     public String getDescription() {
         return description;

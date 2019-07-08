@@ -79,6 +79,9 @@
         $(document).ready(function () {
             $('.searchButton').click(function () {
                 var searchBySelect = $('#searchSelect').val();
+                if (!searchBySelect) {
+                    searchBySelect = "default";
+                }
                 var searchPriceVal = $('#amount').val();
                 var searchTextVal = $('.searchText').val();
                 var searchDatesVal = $('.searchDates').val();
@@ -102,7 +105,7 @@
         });
         $(document).ready(function () {
             document.getElementById('searchSelect').value = "${selectValue}";
-            if ("${searchDates}"!="") {
+            if ("${searchDates}" != "") {
                 document.getElementById('searchDateField').value = "${searchDates}";
             }
         });

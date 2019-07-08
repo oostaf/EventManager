@@ -13,10 +13,7 @@ import java.util.List;
 
 public class SearchParamsDaoImp implements SearchParamsDao {
     public static final String SEARCH_BY_NAME_QUERY = "Select event.id, name, description, cost, date, is_active, " +
-            "address_id, address from event left join location on event.address_id = location.id Where LOWER(name) ~* ?";
-    public static final String SEARCH_BY_NAME_AND_COST_QUERY = "Select event.id, name, description, cost, date, is_active," +
-            "address_id, address from event left join location on event.address_id = location.id " +
-            "Where LOWER(name) ~* ? and cost BETWEEN ? AND ?";
+            "address_id, address, count(*) OVER() AS row_count from event left join location on event.address_id = location.id Where LOWER(name) ~* ?";
 
     @Override
     public List<Event> searchEventsByName(SearchParamsDTO searchParamsDTO) {
@@ -24,23 +21,6 @@ public class SearchParamsDaoImp implements SearchParamsDao {
             PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(SEARCH_BY_NAME_QUERY);
             preparedStatement.setString(1, searchParamsDTO.getName());
             ResultSet resultSet = preparedStatement.executeQuery();
-
-/*            List<Event> filteredEvents = new ArrayList<>();
-            while (resultSet.next()) {
-                Location location = new Location();
-                location.setId(resultSet.getInt("address_id"));
-                location.setAddress(resultSet.getString("address"));
-
-                Event event = new Event();
-                event.setId(resultSet.getInt("id"));
-                event.setName(resultSet.getString("name"));
-                event.setDescription(resultSet.getString("description"));
-                event.setCost(resultSet.getDouble("cost"));
-                event.setActive(resultSet.getBoolean("is_active"));
-                event.setDate(resultSet.getTimestamp("date").toLocalDateTime());
-                event.setLocation(location);
-                filteredEvents.add(event);
-            }*/
             return parseResultSet(resultSet);
         } catch (SQLException exc) {
             throw new RuntimeException("Fail to search events by name", exc);
@@ -66,6 +46,7 @@ public class SearchParamsDaoImp implements SearchParamsDao {
     public List<Event> searchEventsDynamically(SearchParamsDTO searchParamsDTO) {
         String queryToExecute = buildSearchQuery(searchParamsDTO);
         try {
+            int lastIndex = 0;
             PreparedStatement preparedStatement = ConnectionUtils.getConnection().prepareStatement(queryToExecute);
             if (searchParamsDTO.getName() != null) {
                 preparedStatement.setString(1, searchParamsDTO.getName());
@@ -73,20 +54,34 @@ public class SearchParamsDaoImp implements SearchParamsDao {
                 preparedStatement.setString(1, searchParamsDTO.getDescription());
             } else if (searchParamsDTO.getAddress() != null) {
                 preparedStatement.setString(1, searchParamsDTO.getAddress());
-            }else {
+            } else {
                 preparedStatement.setString(1, "");
             }
+            lastIndex = 1;
 
             if (searchParamsDTO.getStartDate() != null) {
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(searchParamsDTO.getStartDate()));
                 preparedStatement.setTimestamp(3, Timestamp.valueOf(searchParamsDTO.getEndDate()));
+                lastIndex = 3;
             }
             if (searchParamsDTO.getLowerCost() != null && searchParamsDTO.getStartDate() == null) {
-                preparedStatement.setDouble(2, searchParamsDTO.getLowerCost());
-                preparedStatement.setDouble(3, searchParamsDTO.getHigherCost());
-            }else if(searchParamsDTO.getLowerCost() != null && searchParamsDTO.getStartDate() != null){
+                lastIndex++;
+                preparedStatement.setDouble(lastIndex, searchParamsDTO.getLowerCost());
+                lastIndex++;
+                preparedStatement.setDouble(lastIndex, searchParamsDTO.getHigherCost());
+//                lastIndex = 3;
+            }
+            /*else if (searchParamsDTO.getLowerCost() != null && searchParamsDTO.getStartDate() != null) {
                 preparedStatement.setDouble(4, searchParamsDTO.getLowerCost());
                 preparedStatement.setDouble(5, searchParamsDTO.getHigherCost());
+                lastIndex = 5;
+            }*/
+
+            if (searchParamsDTO.getEventsPerPage() != null && searchParamsDTO.getPageCount() != null) {
+                lastIndex++;
+                preparedStatement.setInt(lastIndex, searchParamsDTO.getEventsPerPage());
+                lastIndex++;
+                preparedStatement.setInt(lastIndex, searchParamsDTO.getEventsPerPage());
             }
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -106,7 +101,7 @@ public class SearchParamsDaoImp implements SearchParamsDao {
             sb.append("LOWER(description) ~* ? ");
         } else if (searchParamsDTO.getAddress() != null) {
             sb.append("LOWER(address) ~* ? ");
-        }else {
+        } else {
             sb.append("LOWER(name) ~* ? ");
         }
 
@@ -116,7 +111,11 @@ public class SearchParamsDaoImp implements SearchParamsDao {
         if (searchParamsDTO.getLowerCost() != null) {
             sb.append("and (cost BETWEEN ? AND ?) ");
         }
+        sb.append("ORDER BY name ");
 
+        if (searchParamsDTO.getEventsPerPage() != null && searchParamsDTO.getPageCount() != null) {
+            sb.append("LIMIT ? OFFSET ?");
+        }
         return sb.toString();
     }
 

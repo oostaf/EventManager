@@ -17,13 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/eventList"})
-public class EventListServlet extends HttpServlet {
-    Logger logger = LoggerFactory.getLogger(EventListServlet.class);
+@WebServlet(urlPatterns = {"/newEventList"})
+public class UserEventListServlet extends HttpServlet {
 
-    public EventListServlet() {
+    Logger logger = LoggerFactory.getLogger(AdminEventListServlet.class);
+
+    public UserEventListServlet() {
         super();
     }
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,13 +37,13 @@ public class EventListServlet extends HttpServlet {
 
             EventService eventService = new EventServiceImp();
             double maxEventsCost = eventService.getMaxEventsCost();
-            request.setAttribute("maxEventsCost", maxEventsCost);
-            request.setAttribute("minSelectedEventsCost", 0);
             request.setAttribute("maxSelectedEventsCost", maxEventsCost);
+            request.setAttribute("minSelectedEventsCost", 0);
+            request.setAttribute("maxEventsCost", maxEventsCost);
             request.setAttribute("selectValue", "default");
 
             RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/WEB-INF/views/eventListView.jsp");
+                    .getRequestDispatcher("/WEB-INF/views/userEventListView.jsp");
             dispatcher.forward(request, response);
         } catch (Exception exc) {
             logger.info("Exception was received during create event page loading:", exc);

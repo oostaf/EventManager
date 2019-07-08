@@ -18,4 +18,9 @@ public class EventLocationServiceImp implements EventLocationService {
         return eventLocationDaoImp.getAllEventsJoinLocation();
     }
 
+    @Override
+    public int getAllEventsJoinLocationCount() {
+        return eventLocationDaoImp.getAllEventsJoinLocationCount();
+    }
+
 }
